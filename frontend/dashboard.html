@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KI-gestützte Finanzanalyse</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="./static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js" integrity="sha256-fLRzDfSZxmaZk0LhyNIs4Px1F4npSyghgPuVwU4Ul7M=" crossorigin="anonymous"></script>
+    <script defer src="./static/js/dashboard.js"></script>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Prototype • WP4</p>
+        <h1>KI-gestützte Finanzanalyse-Plattform</h1>
+        <p>Wähle ein Unternehmen, definiere deinen Zeitraum und lass dir historische Kursdaten, relevante Nachrichten sowie eine einfache Prognose anzeigen.</p>
+      </div>
+      <div class="hero__disclaimer">
+        <strong>Hinweis:</strong> Es handelt sich um eine Demonstration – keine Anlageberatung.
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2>1. Parameter wählen</h2>
+        <form id="control-form" class="control-form">
+          <label>
+            Unternehmen
+            <select id="symbol" name="symbol" required>
+              {% for ticker, label in symbols.items() %}
+              <option value="{{ ticker }}">{{ label }} ({{ ticker }})</option>
+              {% endfor %}
+            </select>
+          </label>
+
+          <label>
+            Startdatum (max. 1 Jahr zurück)
+            <input type="date" id="start-date" name="start" required>
+          </label>
+
+          <label>
+            Enddatum (max. 1 Monat in Zukunft)
+            <input type="date" id="end-date" name="end" required>
+          </label>
+
+          <div class="control-form__actions">
+            <button type="submit" class="btn">Analyse starten</button>
+            <button type="button" class="btn btn--ghost" id="reset-btn">Zurücksetzen</button>
+          </div>
+        </form>
+        <p class="helper-text">Die Plattform kombiniert Live-Daten mit KI, sobald WP3 verfügbar ist. Aktuell werden historische Daten (yfinance) und News (NewsAPI) angefragt.</p>
+      </section>
+
+      <section class="card">
+        <div class="card__header">
+          <h2>2. Kursentwicklung</h2>
+          <span id="status-badge" class="status">Bereit</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="historical-chart" height="200"></canvas>
+        </div>
+        <div class="chart-wrapper chart-wrapper--secondary">
+          <canvas id="forecast-chart" height="200"></canvas>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card__header">
+          <h2>3. Relevante Nachrichten</h2>
+          <button id="refresh-news" class="btn btn--ghost" type="button">Nur News aktualisieren</button>
+        </div>
+        <div id="news-list" class="news-list">
+          <p class="placeholder">Noch keine Ergebnisse. Starte eine Analyse, um Artikel zu sehen.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>WP4 · Nguyen Vu &amp; Rahul Kaushik</p>
+    </footer>
+  </body>
+</html>
